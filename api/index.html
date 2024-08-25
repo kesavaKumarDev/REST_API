@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Flask API Test</h2>
+
+        <label for="numbers">Numbers (comma separated):</label>
+        <input type="text" id="numbers" placeholder="e.g., 1, 2, 3, 4">
+
+        <label for="alphabets">Alphabets (comma separated):</label>
+        <input type="text" id="alphabets" placeholder="e.g., a, b, c, d">
+
+        <label for="email">College Email ID:</label>
+        <input type="text" id="email" placeholder="e.g., john.doe@example.com">
+
+        <label for="rollNumber">College Roll Number:</label>
+        <input type="text" id="rollNumber" placeholder="e.g., 12345">
+
+        <button onclick="submitData()">Submit</button>
+
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        function submitData() {
+            const numbers = document.getElementById('numbers').value.split(',').map(Number);
+            const alphabets = document.getElementById('alphabets').value.split(',');
+            const email = document.getElementById('email').value;
+            const rollNumber = document.getElementById('rollNumber').value;
+
+            const data = {
+                numbers: numbers,
+                alphabets: alphabets,
+                college_email_id: email,
+                college_roll_number: rollNumber
+            };
+
+            fetch('/bfhl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseDiv = document.getElementById('response');
+                responseDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
